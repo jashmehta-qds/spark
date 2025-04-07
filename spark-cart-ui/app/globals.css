@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 39 100% 98%;
+    --foreground: 40 38% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 40 38% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 40 38% 18%;
+    --primary: 43 100% 40%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 36 43% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 43 30% 96%;
+    --muted-foreground: 40 10% 40%;
+    --accent: 43 30% 90%;
+    --accent-foreground: 36 43% 18%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 43 20% 88%;
+    --input: 43 20% 88%;
+    --ring: 43 100% 40%;
+    --chart-1: 43 100% 40%;
+    --chart-2: 36 43% 18%;
+    --chart-3: 43 70% 50%;
+    --chart-4: 36 35% 30%;
+    --chart-5: 40 80% 60%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 40 38% 18%;
+    --sidebar-primary: 43 100% 40%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 36 43% 18%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 43 20% 88%;
+    --sidebar-ring: 43 100% 40%;
+  }
+  .dark {
+    --background: 36 30% 12%;
+    --foreground: 39 40% 90%;
+    --card: 36 25% 16%;
+    --card-foreground: 39 40% 90%;
+    --popover: 36 25% 16%;
+    --popover-foreground: 39 40% 90%;
+    --primary: 43 80% 40%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 36 30% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 36 20% 20%;
+    --muted-foreground: 39 30% 70%;
+    --accent: 36 20% 25%;
+    --accent-foreground: 39 40% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 36 20% 26%;
+    --input: 36 20% 26%;
+    --ring: 43 80% 40%;
+    --chart-1: 43 80% 40%;
+    --chart-2: 36 30% 60%;
+    --chart-3: 43 50% 50%;
+    --chart-4: 36 40% 40%;
+    --chart-5: 40 60% 60%;
+    --sidebar-background: 36 30% 12%;
+    --sidebar-foreground: 39 40% 90%;
+    --sidebar-primary: 43 80% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 36 20% 25%;
+    --sidebar-accent-foreground: 39 40% 90%;
+    --sidebar-border: 36 20% 26%;
+    --sidebar-ring: 43 80% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Modern UI Components */
+@layer components {
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .input-modern {
+    @apply rounded-xl border-2 bg-white/70 px-4 py-3 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl px-5 py-3 font-medium shadow-sm transition-all hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl px-5 py-3 font-medium shadow-sm transition-all hover:shadow-md;
+  }
+  
+  .vote-button {
+    @apply transition-all duration-200 rounded-full p-2 hover:bg-accent/50;
+  }
+  
+  .vote-button-active {
+    @apply bg-accent shadow-sm;
+  }
+  
+  .product-card {
+    @apply rounded-2xl border border-border bg-card shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md;
+  }
+  
+  .glass-effect {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+  }
+}

@@ -1,0 +1,51 @@
+.glass {
+  background: rgba(218, 165, 32, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(139, 69, 19, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.glass:hover {
+  background: rgba(218, 165, 32, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(139, 69, 19, 0.3);
+  transform: translateY(-2px);
+}
+
+.glass-dark {
+  background: rgba(45, 24, 16, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(205, 133, 63, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-card {
+  @apply glass rounded-xl p-6 transition-all duration-300;
+  animation: float 6s ease-in-out infinite;
+}
+
+.glass-nav {
+  @apply glass fixed top-0 z-50 w-full border-b border-[#8b4513]/30;
+  background: rgba(218, 165, 32, 0.1);
+}
+
+.glass-button {
+  @apply glass rounded-lg px-4 py-2 transition-all duration-300 hover:bg-[#daa520]/20 active:scale-95;
+}
+
+.glass-input {
+  @apply glass rounded-lg border-none px-4 py-2 focus:ring-2 focus:ring-[#8b4513]/30;
+  transition: all 0.3s ease-in-out;
+}
+
+.glass-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px 0 rgba(139, 69, 19, 0.25);
+}
+
+.glass-modal {
+  @apply glass rounded-2xl p-6 shadow-xl;
+  animation: float 6s ease-in-out infinite;
+} 
