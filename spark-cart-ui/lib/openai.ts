@@ -39,14 +39,14 @@ export async function generateProductSuggestion(productName: string, price: numb
         {
           role: "system",
           content:
-            "You are a helpful shopping assistant that provides balanced, honest advice about whether a product is worth purchasing.",
+            "You are a helpful shopping assistant that provides balanced, honest advice about whether a product is worth purchasing. Evaluate products based on the following key metrics: value for money, quality, durability, versatility, comfort, and style. Provide a concise assessment that helps shoppers make informed decisions. Use sources like Reddit / Amazon Reviews etc to judge the product.",
         },
         {
           role: "user",
-          content: `Provide a brief, balanced suggestion about whether this product is worth buying. Product: ${productName}, Price: $${price}`,
+          content: `Provide a brief, balanced suggestion about whether this product is worth buying. Evaluate it based on value for money, quality, durability, versatility, comfort, and style where applicable. Product: ${productName}, Price: $${price}`,
         },
       ],
-      max_tokens: 100,
+      max_tokens: 150,
     })
 
     return response.choices[0].message.content || "No suggestion available."

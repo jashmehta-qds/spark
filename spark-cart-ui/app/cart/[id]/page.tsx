@@ -2,6 +2,7 @@ import { CartHeader } from "@/components/cart/cart-header"
 import { CartItemList } from "@/components/cart/cart-item-list"
 import { CartPoll } from "@/components/cart/cart-poll"
 import { getServerAuthSession } from "@/lib/auth"
+import { generateProductDescription, generateProductSuggestion } from "@/lib/openai"
 import { getCartWithItems } from "@/lib/supabase/carts"
 import { notFound } from "next/navigation"
 
@@ -21,62 +22,130 @@ interface CartItem {
   url: string
   description: string
   aiSuggestion: string
+  brand?: string
+  model?: string
+  category?: string
+  color?: string
+  releaseYear?: number
+  gender?: string
+  sizes?: string[]
+  material?: string
+  technology?: string[]
 }
 
 const DEMO_ITEMS: CartItem[] = [
   {
     id: "1",
-    name: "Wireless Noise Cancelling Headphones",
-    price: 299.99,
+    name: "Nike Air Jordan 1 Retro High OG",
+    price: 180.00,
     image: "/placeholder.svg?height=200&width=200",
-    upvotes: 24,
+    upvotes: 35,
     downvotes: 3,
-    url: "#",
-    description:
-      "Premium wireless headphones with industry-leading noise cancellation, exceptional sound quality, and up to 30 hours of battery life.",
-    aiSuggestion:
-      "These headphones are highly rated for their sound quality and noise cancellation. They're a good investment if you travel frequently or work in noisy environments.",
+    url: "https://nike.com/air-jordan-1-retro-high-og",
+    description: "",
+    aiSuggestion: "",
+    brand: "Nike",
+    model: "Air Jordan 1",
+    category: "Basketball",
+    color: "University Blue/White",
+    releaseYear: 2023,
+    gender: "Unisex",
+    sizes: ["US 7", "US 8", "US 9", "US 10", "US 11", "US 12"],
+    material: "Full-grain leather",
+    technology: ["Air-Sole cushioning", "Cupsole construction"]
   },
   {
     id: "2",
-    name: "Smart Fitness Watch",
-    price: 199.99,
+    name: "Nike Dri-FIT Running Shorts",
+    price: 45.00,
     image: "/placeholder.svg?height=200&width=200",
     upvotes: 18,
-    downvotes: 7,
-    url: "#",
-    description:
-      "Advanced fitness tracker with heart rate monitoring, GPS, sleep tracking, and 7-day battery life.",
-    aiSuggestion:
-      "This fitness watch offers good value for the features. Consider if you'll use all the advanced tracking capabilities before purchasing.",
+    downvotes: 2,
+    url: "https://nike.com/dri-fit-running-shorts",
+    description: "",
+    aiSuggestion: "",
+    brand: "Nike",
+    model: "Flex Stride",
+    category: "Running",
+    color: "Black/Reflective Silver",
+    releaseYear: 2022,
+    gender: "Men",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    material: "88% Polyester, 12% Spandex",
+    technology: ["Dri-FIT", "Reflective elements", "Built-in liner"]
   },
   {
     id: "3",
-    name: "Portable Bluetooth Speaker",
-    price: 129.99,
+    name: "Nike Metcon 8 Training Shoes",
+    price: 130.00,
     image: "/placeholder.svg?height=200&width=200",
-    upvotes: 12,
-    downvotes: 2,
-    url: "#",
-    description:
-      "Waterproof portable speaker with 360° sound, 24-hour battery life, and durable design for outdoor adventures.",
-    aiSuggestion:
-      "This speaker is well-reviewed for its durability and sound quality. It's a good choice if you need something portable and weather-resistant.",
+    upvotes: 24,
+    downvotes: 4,
+    url: "https://nike.com/metcon-8",
+    description: "",
+    aiSuggestion: "",
+    brand: "Nike",
+    model: "Metcon 8",
+    category: "Training",
+    color: "Particle Grey/Dark Smoke Grey/Volt",
+    releaseYear: 2023,
+    gender: "Unisex",
+    sizes: ["US 6", "US 7", "US 8", "US 9", "US 10", "US 11", "US 12"],
+    material: "Mesh and synthetic upper",
+    technology: ["React foam", "Hyperlift insert", "Chain-link mesh"]
   },
+  {
+    id: "4",
+    name: "Nike Pegasus 40 Running Shoes",
+    price: 140.00,
+    image: "/placeholder.svg?height=200&width=200",
+    upvotes: 29,
+    downvotes: 5,
+    url: "https://nike.com/pegasus-40",
+    description: "",
+    aiSuggestion: "",
+    brand: "Nike",
+    model: "Pegasus 40",
+    category: "Running",
+    color: "Bright Crimson/Dark Team Red",
+    releaseYear: 2023,
+    gender: "Men",
+    sizes: ["US 7", "US 8", "US 9", "US 10", "US 11", "US 12", "US 13"],
+    material: "Engineered mesh",
+    technology: ["React foam", "Zoom Air units", "Waffle outsole"]
+  }
 ]
 
 export default async function CartPage({ params }: CartPageProps) {
   // Await all server-side data fetching concurrently
-  const [session, cartId] = await Promise.all([
-    getServerAuthSession(),
-    Promise.resolve(params.id)
-  ])
+  const session = await getServerAuthSession()
+  const { id: cartId } = await params
 
   // Get the user ID from the session if it exists
   const userId = session?.user?.id
 
   // For demo purposes
   if (cartId === "demo") {
+    // Generate descriptions and suggestions using AI
+    const itemsWithAIContent = await Promise.all(
+      DEMO_ITEMS.map(async (item) => {
+        // Only generate if not already populated
+        if (!item.description || !item.aiSuggestion) {
+          const [description, aiSuggestion] = await Promise.all([
+            generateProductDescription(item.name),
+            generateProductSuggestion(item.name, item.price),
+          ]);
+          
+          return {
+            ...item,
+            description,
+            aiSuggestion,
+          };
+        }
+        return item;
+      })
+    );
+    
     return (
       <div className="min-h-screen bg-background pb-16">
         <div className="w-full bg-primary/5 border-b border-primary/10 mb-6">
@@ -96,7 +165,7 @@ export default async function CartPage({ params }: CartPageProps) {
           <div className="grid gap-10 lg:grid-cols-[1fr_350px] xl:grid-cols-[1fr_400px]">
             <div>
               <CartItemList
-                items={DEMO_ITEMS}
+                items={itemsWithAIContent}
                 cartId={cartId}
                 isAuthenticated={!!session}
                 userId={userId}
