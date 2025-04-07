@@ -11,6 +11,7 @@ import { ExternalLink, MessageSquare, Sparkles, ThumbsDown, ThumbsUp } from "luc
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import ReactMarkdown from "react-markdown"
 
 interface CartItemProps {
   item: {
@@ -203,7 +204,11 @@ export function CartItem({ item, cartId, isAuthenticated, userId }: CartItemProp
               </TabsTrigger>
             </TabsList>
             <TabsContent value="description" className="mt-5 text-muted-foreground">
-              <p>{item.description}</p>
+              <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none">
+                <ReactMarkdown>
+                  {item.description}
+                </ReactMarkdown>
+              </div>
               <div className="mt-4">
                 <Link href={item.url} target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="sm" className="gap-1.5 mt-2 rounded-full px-4">
@@ -221,7 +226,11 @@ export function CartItem({ item, cartId, isAuthenticated, userId }: CartItemProp
                   </div>
                   <span className="font-medium text-sm text-primary">AI ANALYSIS</span>
                 </div>
-                <p className="text-muted-foreground">{item.aiSuggestion}</p>
+                <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none text-muted-foreground">
+                  <ReactMarkdown>
+                    {item.aiSuggestion}
+                  </ReactMarkdown>
+                </div>
                 <div className="absolute w-4 h-4 bg-primary/5 border-t border-l border-primary/20 transform rotate-45 top-6 left-[-8px]"></div>
               </div>
             </TabsContent>
